@@ -4,7 +4,8 @@
   "description": "URL Shortener Microservice, as in https://www.freecodecamp.com/challenges/url-shortener-microservice",
   "main": "service.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node service.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/janis-kra/url-komprimator/issues"
   },
-  "homepage": "https://github.com/janis-kra/url-komprimator#readme"
+  "homepage": "https://github.com/janis-kra/url-komprimator#readme",
+  "engines": {
+    "node": "> 6.0"
+  },
+  "dependencies": {
+    "restify": "^4.1.1"
+  }
 }
