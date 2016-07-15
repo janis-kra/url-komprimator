@@ -1,5 +1,6 @@
 /* MongoDB Stuff */
 const MongoClient = require('mongodb').MongoClient;
+const randomstring = require('randomstring');
 
 const mongoUrl = 'mongodb://localhost:27017/myproject';
 let urls;
@@ -19,7 +20,7 @@ const server = express();
 const httpRegexp = /^\/(http:\/\/www\.[\w]+\.com)$/;
 const shortenedUrlRegexp = /^\/(\w+)$/;
 
-const shorten = (url) => 'Error: Not implemented yet';
+const shorten = () => randomstring.generate(6);
 
 server.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -28,15 +29,27 @@ server.use((req, res, next) => {
 });
 
 server.get(httpRegexp, (req, res) => {
-  const url = req.params[0];
-  res.json({
-    original_url: url,
-    short_url: shorten(url)
+  const url = {
+    original_url: req.params[0],
+    short_url: shorten()
+  };
+  urls.insert(url, function (err, result) {
+    if (err) {
+      res.error(err);
+    } else {
+      res.json(url);
+    }
   });
 });
 
 server.get(shortenedUrlRegexp, (req, res) => {
-  res.send('shortened urls soon coming to a location near you');
+  urls.find({ short_url: req.params[0] }).toArray((err, docs) => {
+    if (docs && typeof docs[0] === 'object') {
+      res.redirect(docs[0].original_url);
+    } else {
+      res.error(err || 'unknown error');
+    }
+  });
 });
 
 server.all('*', (req, res) => {
