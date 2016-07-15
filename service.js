@@ -1,5 +1,18 @@
-const express = require('express');
+/* MongoDB Stuff */
+const MongoClient = require('mongodb').MongoClient;
 
+const mongoUrl = 'mongodb://localhost:27017/myproject';
+let urls;
+
+MongoClient.connect(mongoUrl, function(err, db) {
+  if (!err) {
+    console.log("Connected correctly to the MongoDB server");
+    urls = db.collection('urls');
+  }
+});
+
+/* Webservice Stuff */
+const express = require('express');
 const PORT = process.env.PORT || 8083;
 const server = express();
 
