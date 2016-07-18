@@ -2,7 +2,16 @@
 const MongoClient = require('mongodb').MongoClient;
 const randomstring = require('randomstring');
 
-const mongoUrl = 'mongodb://localhost:27017/myproject';
+const dbCredentials = {
+  login: process.env.DB_LOGIN || '',
+  url: process.env.DB_URL || 'localhost:27017',
+  name: process.env.DB_NAME || 'url-komprimator'
+}
+const mongoUrl = 'mongodb://' +
+  dbCredentials.login + '@' +
+  dbCredentials.url + '/' +
+  dbCredentials.name;
+
 let urls;
 
 MongoClient.connect(mongoUrl, function(err, db) {
